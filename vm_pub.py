@@ -6,16 +6,17 @@ import time
 from datetime import datetime
 import socket
 
+
 """This function (or "callback") will be executed when this client receives 
 a connection acknowledgement packet response from the server. """
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
 
 
+
 if __name__ == '__main__':
     #get IP address
-    ip_address=0 
-    """your code here"""
+    ip_address = socket.gethostbyname(socket.gethostname())
     #create a client object
     client = mqtt.Client()
     
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     client. If the connection request is successful, the callback attached to
     `client.on_connect` will be called."""
 
-    client.connect(host="test.mosquitto.org", port=1883, keepalive=60)
+    client.connect(host="broker.hivemq.com", port=1883, keepalive=60)
 
     """ask paho-mqtt to spawn a separate thread to handle
     incoming and outgoing mqtt messages."""
@@ -39,11 +40,17 @@ if __name__ == '__main__':
 
     while True:
         #replace user with your USC username in all subscriptions
-        client.publish("user/ipinfo", f"{ip_address}")
-        print("Publishing ip address")
-        time.sleep(4)
-
+        client.publish("otandon/ipinfo", f"{ip_address}")
+        print(f"Publishing ip address: {ip_address}")
         #get date and time 
         """your code here"""
+        now = datetime.now()
+        date = now.strftime("%Y-%m-%d")
+        current_time = now.strftime("%H:%M:%S")
         #publish date and time in their own topics
         """your code here"""
+        client.publish("otandon/date", f"{date}")
+        print(f"Publishing date : {date}")
+        client.publish("otandon/time", f"{current_time}")
+        print(f"Publishing time: {current_time}")
+        time.sleep(4)
