@@ -22,7 +22,7 @@ def on_message(client, userdata, message):
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect(BROKER, 1883, 60)
-time.sleep(1)
+time.sleep(3)
 client.publish(PING, 1)
 print(f"Sending ping: 1")
 client.loop_forever()
